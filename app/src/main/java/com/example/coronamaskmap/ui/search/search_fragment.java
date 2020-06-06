@@ -97,8 +97,15 @@ public class search_fragment extends Fragment {
         });
     }
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
-    }
+
+        AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getActivity());
+        alert_confirm.setMessage("예시 : '서울특별시 강남구' \n또는,  '서울특별시 강남구 논현동'\n" +
+                "('서울특별시'와 같이 '시'단위만\n  입력하는 것은 불가능합니다.)");
+        alert_confirm.setPositiveButton("확인", null);
+        AlertDialog alert = alert_confirm.create();
+        alert.setTitle("검색 시 입력 유의사항");
+        alert.show();    }
 }
