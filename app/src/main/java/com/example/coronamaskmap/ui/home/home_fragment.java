@@ -344,26 +344,41 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
             switch (remain_stat) {
                 case "plenty" : {
                     remain_stat = "100개 이상";
+                    Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
+                            .title(item.getName())
+                            .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green)));
+                    markerList.add(marker);
                     break;
                 }
                 case "some" : {
                     remain_stat = "30개 이상 100개 미만";
+                    Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
+                            .title(item.getName())
+                            .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_blue)));
+                    markerList.add(marker);
                     break;
                 }
                 case "few" : {
                     remain_stat = "2개 이상 30개 미만";
+                    Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
+                            .title(item.getName())
+                            .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow)));
+                    markerList.add(marker);
                     break;
                 }
                 case "empty" : {
                     remain_stat = "1개 이하";
+                    Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
+                            .title(item.getName())
+                            .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red)));
+                    markerList.add(marker);
                     break;
                 }
             }
-            Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
-                    .title(item.getName())
-                    .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green)));
-            markerList.add(marker);
         }
         return;
     }
@@ -428,5 +443,4 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
         super.onDestroy();
         mapView.onLowMemory();
     }
-
 }
