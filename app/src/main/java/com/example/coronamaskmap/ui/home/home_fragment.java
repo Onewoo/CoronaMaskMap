@@ -1,7 +1,6 @@
 package com.example.coronamaskmap.ui.home;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -9,6 +8,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.example.coronamaskmap.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -44,24 +43,24 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+public class home_fragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener{
 
-public class home_fragment extends Fragment implements OnMapReadyCallback{
-
-    private static final String TAG = "테스트";
+    final String LOG = "테스트";
+    final String TAG = getClass().getSimpleName() + "::";
     private View view;
     private MapView mapView = null;
     private GoogleMap mgoogleMap;
     private Marker currentMarker = null;
+    public static ArrayList<corona_item> corona_list = new ArrayList();
+    private int apiRequestCount;
+    private ArrayList<Marker> markerList = new ArrayList();
 
+    public static boolean startFlagForCoronaApi;
     private FusedLocationProviderClient mFusedLocationProviderClient; // Deprecated된 FusedLocationApi를 대체
     private LocationRequest locationRequest;
     private Location mCurrentLocatiion;
@@ -136,6 +135,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback{
         updateLocationUI();
 
         getDeviceLocation();
+        mgoogleMap.setOnCameraIdleListener(this);
     }
 
     private void setDefaultLocation() {
@@ -296,6 +296,77 @@ public class home_fragment extends Fragment implements OnMapReadyCallback{
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    @Override
+    public void onCameraIdle() {
+        removeMarkerAll();
+        Log.d(LOG, TAG + "onCameraIdle()");
+        String lat = String.valueOf(mgoogleMap.getCameraPosition().target.latitude);
+        String lon = String.valueOf(mgoogleMap.getCameraPosition().target.longitude);
+        startFlagForCoronaApi = true;
+        CoronaApi coronaApi = new CoronaApi();
+        coronaApi.execute(lat, lon, "");
+
+        apiRequestCount = 0;
+        final Handler temp_Handler = new Handler();
+        temp_Handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(LOG, TAG + "run()");
+                if (apiRequestCount < 100) {
+                    Log.d(LOG, TAG + "apiRequestCount < 100");
+                    if (startFlagForCoronaApi) {
+                        Log.d(LOG, TAG + "startFlagForCoronaApi");
+                        apiRequestCount++;
+                        temp_Handler.postDelayed(this, 100);
+                    }else {
+                        Log.d(LOG, TAG + "before drawMarker()");
+                        drawMarker();
+                    }
+                }else {
+                    Toast.makeText(getActivity(), "호출에 실패하였습니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                }
+            }
+        },100);
+
+    }
+
+    private void removeMarkerAll() {
+        for (Marker marker : markerList) {
+            marker.remove();
+        }
+    }
+
+    private void drawMarker() {
+        Log.d(LOG, TAG + "drawMarker()");
+        for (int i = 0; i < corona_list.size(); i++){
+            corona_item item = corona_list.get(i);
+            String remain_stat = item.getRemain_stat();
+            switch (remain_stat) {
+                case "plenty" : {
+                    remain_stat = "100개 이상";
+                    break;
+                }
+                case "some" : {
+                    remain_stat = "30개 이상 100개 미만";
+                    break;
+                }
+                case "few" : {
+                    remain_stat = "2개 이상 30개 미만";
+                    break;
+                }
+                case "empty" : {
+                    remain_stat = "1개 이하";
+                    break;
+                }
+            }
+            Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
+                    .title(item.getName())
+                    .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green)));
+            markerList.add(marker);
+        }
+        return;
+    }
 
     @Override
     public void onStart() {
@@ -358,29 +429,4 @@ public class home_fragment extends Fragment implements OnMapReadyCallback{
         mapView.onLowMemory();
     }
 
-    //retrofit Api를 통해 fetchstoreSale호출함
-    private void fetchstoreSale(double lat, double lng, int m){
-        //Retrofit Builder생성, addConverterFactory(GsonConverterFactory.create()) 전달된 json 형태를 자바 객채로 변환 시켜줌
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://8oi9s0nnth.apigw.ntruss.com").addConverterFactory(GsonConverterFactory.create()).build();
-        //retrofit객채를 사용해서 MaskApi 인터페이스를 가지는 자바 객체를 생성 maskApi에는 getStoreSales api 구현되어 호출됨
-        MaskApi maskApi = retrofit.create(MaskApi.class);
-        //결과를 callback으로 전달받음
-        maskApi.getStoresByGeo(lat,lng,m).enqueue(new Callback<StoreSaleResult>() {
-            @Override
-            public void onResponse(Call<StoreSaleResult> call, Response<StoreSaleResult> response) {
-                //호출이 성공하였을때 http안에서 response.code가 200이면 성공적으로 전달됨
-                if(response.code()==200){
-                    StoreSaleResult result = response.body();
-                    /***String addr = result.getStores().toString();
-                     tv.setText(addr);*///출력되는지 시험해봄
-                    //마커 만들때 result를 사용하면 됨
-                }
-            }
-
-            @Override
-            public void onFailure(Call<StoreSaleResult> call, Throwable t) {
-                //호출이 실패하였을때
-            }
-        });
-    }
 }

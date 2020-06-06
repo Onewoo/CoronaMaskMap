@@ -1,25 +1,16 @@
 package com.example.coronamaskmap.ui.home;
 
-//주소, 코드, 데이터 업데이트 시간, 위도, 경도, 약국 이름, 재고 현황, 언제 입고되었는지, 타입
-public class Store {
-    //주소
-    public String addr;
-    //식별 코드
-    public String code;
-    //데이터 업데이트 시간
-    public String created_at;
-    //위도
-    public double lat;
-    //경도
-    public double lng;
-    //약국이름
-    public String name;
-    //재고 상태
-    public String remain_stat;
-    //입고 시간
-    public String stock_at;
-    //판매처 유형[약국: 01, 우체국: 02, 농협: 03]
-    public String type;
+public class corona_item {
+    private String addr;
+    private String code;
+    private String created_at;
+    private String lat;
+    private String lng;
+    private String name;
+    private String remain_stat;
+    private String stock_at;
+    private String type;
+
 
     public String getAddr() {
         return addr;
@@ -45,19 +36,19 @@ public class Store {
         this.created_at = created_at;
     }
 
-    public double getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public double getLng() {
+    public String getLng() {
         return lng;
     }
 
-    public void setLng(double lng) {
+    public void setLng(String lng) {
         this.lng = lng;
     }
 
@@ -92,5 +83,16 @@ public class Store {
     public void setType(String type) {
         this.type = type;
     }
+
+    public corona_item(String lat, String lng, String addr, String code, String created_at, String name, String remain_stat, String stock_at, String type) {
+        this.addr = addr;
+        this.code = code;
+        this.created_at = created_at;
+        this.lat = lat;
+        this.lng = lng;
+        this.name = name;
+        this.remain_stat = remain_stat;
+        this.stock_at = stock_at;
+        this.type = type;
+    }
 }
-//retrofit api가 받은 json형태를 자바 객체로 변화해서 전달해줌
