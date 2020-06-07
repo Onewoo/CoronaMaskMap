@@ -348,7 +348,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
                     remain_stat = "100개 이상";
                     Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
                             .title(item.getName())
-                            .snippet("주소: "+item.getAddr() + "\n"+"입고시간: "  + item.getStock_at() + "\n"+"재고상태: "+item.getRemain_stat())
+                            .snippet("주소: "+item.getAddr() + "\n"+"갱신 시간: " + item.getCreated_at()+"\n"+"입고시간: " + item.getStock_at() + "\n"+"재고상태: "+ remain_stat)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green)));
                     markerList.add(marker);
                     break;
@@ -357,7 +357,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
                     remain_stat = "30개 이상 100개 미만";
                     Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
                             .title(item.getName())
-                            .snippet("주소: "+item.getAddr() + "\n"+"입고시간: "  + item.getStock_at() + "\n"+"재고상태: "+item.getRemain_stat())
+                            .snippet("주소: "+item.getAddr() + "\n"+"갱신 시간: " + item.getCreated_at()+"\n"+"입고시간: " + item.getStock_at() + "\n"+"재고상태: "+ remain_stat)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_blue)));
                     markerList.add(marker);
                     break;
@@ -366,7 +366,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
                     remain_stat = "2개 이상 30개 미만";
                     Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
                             .title(item.getName())
-                            .snippet("주소: "+item.getAddr() + "\n"+"입고시간: "  + item.getStock_at() + "\n"+"재고상태: "+item.getRemain_stat())
+                            .snippet("주소: "+item.getAddr() + "\n"+"갱신 시간: " + item.getCreated_at()+"\n"+"입고시간: " + item.getStock_at() + "\n"+"재고상태: "+ remain_stat)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow)));
                     markerList.add(marker);
                     break;
@@ -375,7 +375,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
                     remain_stat = "1개 이하";
                     Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
                             .title(item.getName())
-                            .snippet("주소: "+item.getAddr() + "\n"+"입고시간: "  + item.getStock_at() + "\n"+"재고상태: "+item.getRemain_stat())
+                            .snippet("주소: "+item.getAddr() + "\n"+"갱신 시간: " + item.getCreated_at()+"\n"+"입고시간: " + item.getStock_at() + "\n"+"재고상태: "+ remain_stat)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red)));
                     markerList.add(marker);
                     break;
