@@ -300,7 +300,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
 
     @Override
     public void onCameraIdle() {
-        removeMarkerAll();
+        //removeMarkerAll();
         Log.d(LOG, TAG + "onCameraIdle()");
         String lat = String.valueOf(mgoogleMap.getCameraPosition().target.latitude);
         String lon = String.valueOf(mgoogleMap.getCameraPosition().target.longitude);
@@ -332,11 +332,11 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
 
     }
 
-    private void removeMarkerAll() {
+   /* private void removeMarkerAll() {
         for (Marker marker : markerList) {
             marker.remove();
         }
-    }
+    }*/
 
     private void drawMarker() {
         Log.d(LOG, TAG + "drawMarker()");
@@ -348,7 +348,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
                     remain_stat = "100개 이상";
                     Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
                             .title(item.getName())
-                            .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
+                            .snippet("주소: "+item.getAddr() + "\n"+"입고시간: "  + item.getStock_at() + "\n"+"재고상태: "+item.getRemain_stat())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green)));
                     markerList.add(marker);
                     break;
@@ -357,7 +357,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
                     remain_stat = "30개 이상 100개 미만";
                     Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
                             .title(item.getName())
-                            .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
+                            .snippet("주소: "+item.getAddr() + "\n"+"입고시간: "  + item.getStock_at() + "\n"+"재고상태: "+item.getRemain_stat())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_blue)));
                     markerList.add(marker);
                     break;
@@ -366,7 +366,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
                     remain_stat = "2개 이상 30개 미만";
                     Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
                             .title(item.getName())
-                            .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
+                            .snippet("주소: "+item.getAddr() + "\n"+"입고시간: "  + item.getStock_at() + "\n"+"재고상태: "+item.getRemain_stat())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow)));
                     markerList.add(marker);
                     break;
@@ -375,7 +375,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
                     remain_stat = "1개 이하";
                     Marker marker = mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(item.getLat()), Double.parseDouble(item.getLng())))
                             .title(item.getName())
-                            .snippet(item.getAddr() + "@" + item.getCreated_at() + "@" + item.getRemain_stat() + "@" + item.getStock_at() + "@" + item.getType())
+                            .snippet("주소: "+item.getAddr() + "\n"+"입고시간: "  + item.getStock_at() + "\n"+"재고상태: "+item.getRemain_stat())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red)));
                     markerList.add(marker);
                     break;
@@ -447,7 +447,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
     }
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(getContext(),marker.getTitle() + "\n"+ marker.getPosition(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), marker.getTitle() + "\n" + marker.getPosition(), Toast.LENGTH_LONG).show();
         return false;
     }
 }
