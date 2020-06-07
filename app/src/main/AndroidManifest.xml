@@ -24,7 +24,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB5tSirfghk9qPEcoITX9itaSAoNylQUDY" />
+            android:value="보안상의 이유로 가림" />
     </application>
 
 </manifest>
