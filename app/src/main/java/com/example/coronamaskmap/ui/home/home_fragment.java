@@ -300,7 +300,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
 
     @Override
     public void onCameraIdle() {
-        //removeMarkerAll();
+        removeMarkerAll();
         Log.d(LOG, TAG + "onCameraIdle()");
         String lat = String.valueOf(mgoogleMap.getCameraPosition().target.latitude);
         String lon = String.valueOf(mgoogleMap.getCameraPosition().target.longitude);
@@ -332,11 +332,11 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
 
     }
 
-   /* private void removeMarkerAll() {
+   private void removeMarkerAll() {
         for (Marker marker : markerList) {
             marker.remove();
         }
-    }*/
+    }
 
     private void drawMarker() {
         Log.d(LOG, TAG + "drawMarker()");
@@ -447,7 +447,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
     }
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(getContext(), marker.getTitle() + "\n" + marker.getPosition(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), marker.getTitle() + "\n" + marker.getSnippet(), Toast.LENGTH_LONG).show();
         return false;
     }
 }
