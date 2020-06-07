@@ -48,7 +48,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class home_fragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener{
+public class home_fragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener{
 
     final String LOG = "테스트";
     final String TAG = getClass().getSimpleName() + "::";
@@ -136,6 +136,8 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
 
         getDeviceLocation();
         mgoogleMap.setOnCameraIdleListener(this);
+        //버튼클릭리스너
+        mgoogleMap.setOnMarkerClickListener(this);
     }
 
     private void setDefaultLocation() {
@@ -442,5 +444,10 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, Googl
     public void onDestroy() {
         super.onDestroy();
         mapView.onLowMemory();
+    }
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Toast.makeText(getContext(),marker.getTitle() + "\n"+ marker.getPosition(), Toast.LENGTH_LONG).show();
+        return false;
     }
 }
