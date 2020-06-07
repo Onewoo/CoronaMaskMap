@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">CoronaMaskMap</string>
+    <string name="app_name">코로나 마스크 맵</string>
     <string name="menu_home">홈</string>
-    <string name="menu_searching">검색</string>
+    <string name="menu_searching">판매처 검색</string>
     <string name="menu_webview">코로나있다</string>
     <string name="search">검색</string>
 </resources>
